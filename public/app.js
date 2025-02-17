@@ -46,3 +46,14 @@ function loginWithKakao() {
     }
   });
 }
+
+// 위의 코드를 유지하고, 페이지 로드시 자동으로 사용자 정보를 요청하는 부분은 제거합니다.
+// Kakao.API.request({
+//   url: '/v2/user/me',
+//   success: function(res) {
+//     // ... 생략 ...
+//   },
+//   fail: function(error) {
+//     console.error("Failed to get user info:", error);
+//   }
+// });
