@@ -17,6 +17,7 @@
         scope: 'profile_nickname, account_email, gender, age_range, birthyear, phone_number',
         success: function(authObj) {
           console.log("Kakao login success:", authObj);
+          // 로그인 성공 후 사용자 정보 요청
           Kakao.API.request({
             url: '/v2/user/me',
             success: function(res) {
@@ -46,24 +47,7 @@
       color: #333;
       line-height: 1.6;
       background: #fff;
-      padding-top: 70px; /* 상단 고정 버튼 공간 확보 */
     }
-    /* 상단 고정 가입하기 버튼 */
-    #signupButton {
-      background-color: #FEE500;
-      border: none;
-      border-radius: 4px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      color: #000;
-      position: fixed;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-    }
-    /* 헤더 스타일 */
     header {
       text-align: center;
       padding: 20px;
@@ -73,7 +57,6 @@
       font-size: 2rem;
       margin-bottom: 10px;
     }
-    /* 추가한 hero 텍스트를 h2로 헤더 내에 배치 */
     header h2 {
       font-size: 1.8rem;
       background-color: rgba(0, 0, 0, 0.5);
@@ -86,11 +69,21 @@
     header p {
       font-size: 1rem;
       color: #666;
+      margin-bottom: 10px;
     }
-    /* 메인 콘텐츠 영역 */
+    /* 가입하기 버튼 기본 스타일 */
+    button {
+      background-color: #FEE500;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      color: #000;
+    }
     main {
       max-width: 960px;
-      margin: 0 auto;
+      margin: 20px auto;
       padding: 40px 20px;
     }
     main h2 {
@@ -101,7 +94,6 @@
       font-size: 1.1rem;
       margin-bottom: 20px;
     }
-    /* 이미지 갤러리 */
     .image-gallery {
       display: flex;
       flex-wrap: wrap;
@@ -114,13 +106,11 @@
       border-radius: 6px;
       object-fit: cover;
     }
-    /* 활동 목록 */
     ul {
       list-style-type: disc;
       margin-left: 20px;
       margin-bottom: 20px;
     }
-    /* 푸터 스타일 */
     footer {
       text-align: center;
       padding: 20px;
@@ -134,18 +124,18 @@
   </style>
 </head>
 <body>
-  <!-- 상단 고정 가입하기 버튼 -->
-  <button id="signupButton" onclick="loginWithKakao()">가입하기</button>
-  <!-- 가입 결과 메시지 -->
-  <div id="signupResult" style="text-align: center; margin-top: 90px;"></div>
-
-  <!-- 헤더 영역 (hero 텍스트를 h2로 삽입) -->
+  <!-- 헤더 영역 -->
   <header>
     <h1>헌법개정국민행동</h1>
     <h2>국민의 목소리를 반영하는 헌법 개정을!</h2>
     <p>헌법개정을 국민의 손으로 ✊✊✊</p>
+    <!-- 가입하기 버튼이 문서 흐름에 따라 바로 이 위치에 배치됨 -->
+    <button onclick="loginWithKakao()">가입하기</button>
   </header>
-
+  
+  <!-- 가입 결과 메시지 영역 -->
+  <div id="signupResult" style="text-align: center; margin: 20px 0;"></div>
+  
   <!-- 메인 콘텐츠 -->
   <main>
     <p>
@@ -175,7 +165,7 @@
       <strong>actnowkorea@gmail.com</strong>
     </p>
   </main>
-
+  
   <!-- 푸터 영역 -->
   <footer>
     <p>
