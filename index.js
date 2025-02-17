@@ -11,7 +11,13 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // 정적 파일 제공: public 폴더를 정적 경로로 사용 (public/index.html이 기본 페이지로 제공됨)
-app.use(express.static('public'));
+app.use(express.static('public', {
+  setHeaders: function (res, path) {
+    if (path.endsWith('.html')) {
+      res.setHeader('Content-Type', 'text/html');
+    }
+  }
+}));
 
 // 로그인 페이지 라우트: (정적 파일 대신 별도의 HTML을 제공하고 싶다면)
 // 여기서는 예시로 /login 라우트를 남겨둡니다.
