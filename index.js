@@ -145,6 +145,14 @@ app.post('/api/registerKakaoUser', async (req, res) => {
   }
 });
 
+
+// 테스트 라우트
+app.get('/test-html', (req, res) => {
+  // __dirname은 현재 JS 파일이 위치한 폴더 경로를 가리킵니다.
+  // public 폴더 내 index.html 파일을 직접 전송
+  res.sendFile(__dirname + '/public/index.html');
+});
+
 // 서버 실행 (한 번만 호출)
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
