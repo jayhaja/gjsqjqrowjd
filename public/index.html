@@ -7,23 +7,20 @@
   <!-- Kakao JavaScript SDK 불러오기 -->
   <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
   <script>
-    // Kakao SDK 초기화 (아래 키를 본인의 키로 교체)
+    // Kakao SDK 초기화 (본인의 JavaScript 키로 교체)
     Kakao.init('90ed090fa6d7044e65e276410a0232d7');
     console.log("Kakao SDK initialized");
 
     // 가입하기 버튼 클릭 시 호출되는 함수
     function loginWithKakao() {
       Kakao.Auth.login({
-        // 요청할 동의 항목 (필요에 따라 추가)
         scope: 'profile_nickname, account_email, gender, age_range, birthyear, phone_number',
         success: function(authObj) {
           console.log("Kakao login success:", authObj);
-          // 로그인 성공 후 사용자 정보 요청
           Kakao.API.request({
             url: '/v2/user/me',
             success: function(res) {
               console.log("Kakao user info:", res);
-              // 여기서 백엔드로 사용자 정보를 전송하거나 후속 처리를 할 수 있습니다.
               document.getElementById('signupResult').innerText = "가입이 완료되었습니다.";
             },
             fail: function(error) {
@@ -49,7 +46,24 @@
       color: #333;
       line-height: 1.6;
       background: #fff;
+      padding-top: 70px; /* 상단 고정 버튼 공간 확보 */
     }
+    /* 가입하기 버튼 스타일 - 페이지 최상단 중앙에 고정 */
+    #signupButton {
+      background-color: #FEE500;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      color: #000;
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+    }
+    /* 헤더, 배너, 메인, 푸터 스타일 */
     header, footer {
       text-align: center;
       padding: 20px;
@@ -63,11 +77,10 @@
       font-size: 1rem;
       color: #666;
     }
-    /* 상단 큰 배너(배경 이미지) 섹션 */
     .hero {
       width: 100%;
       min-height: 300px;
-      background: url("배경이미지.jpg") center/cover no-repeat; /* 원하는 이미지 경로로 수정 */
+      background: url("배경이미지.jpg") center/cover no-repeat;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -80,7 +93,6 @@
       border-radius: 8px;
       font-size: 1.8rem;
     }
-    /* 메인 콘텐츠 영역 */
     main {
       max-width: 960px;
       margin: 0 auto;
@@ -94,7 +106,6 @@
       font-size: 1.1rem;
       margin-bottom: 20px;
     }
-    /* 이미지 2장 나란히 배치 예시 */
     .image-gallery {
       display: flex;
       flex-wrap: wrap;
@@ -103,60 +114,52 @@
     }
     .image-gallery img {
       width: 100%;
-      max-width: 48%; /* 2장이라면 48% 정도로 조정 */
+      max-width: 48%;
       border-radius: 6px;
       object-fit: cover;
     }
-    /* 활동 목록 등 */
     ul {
       list-style-type: disc;
       margin-left: 20px;
       margin-bottom: 20px;
     }
-    /* 푸터 */
     footer p {
       font-size: 0.9rem;
       color: #666;
       line-height: 1.4;
     }
-    /* 가입하기 버튼 스타일 */
-    #signupButton {
-      background-color: #FEE500;
-      border: none;
-      border-radius: 4px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      color: #000;
-      margin: 20px 0;
-    }
   </style>
 </head>
 <body>
+  <!-- 가입하기 버튼 (상단 고정) -->
+  <button id="signupButton" onclick="loginWithKakao()">가입하기</button>
+  <!-- 가입 결과 메시지 영역 -->
+  <div id="signupResult" style="text-align: center; margin-top: 90px;"></div>
+
   <!-- 헤더 영역 -->
   <header>
     <h1>헌법개정국민행동</h1>
-    <p>국가와 국회에 촉구합니다. 헌법 개정을 통해 더 나은 사회를 만들고자 합니다.</p>
+    <p>헌법개정을 국민의 손으로 ✊✊✊</p>
   </header>
-
+  
   <!-- 상단 큰 배너(배경 이미지) -->
   <section class="hero">
     <h2>국민의 목소리를 반영하는 헌법 개정을!</h2>
   </section>
-
+  
   <!-- 메인 콘텐츠 -->
   <main>
     <p>
-      헌법개정국민행동은 국민의 기본적 권리를 확장하고, 
-      더 나은 제도와 정책을 마련하기 위해 함께 노력합니다.
+      국가적 혼란 속에서, 개헌의 목소리가 곳곳에서 터져 나오고 있습니다. 
+      헌법개정국민행동은 87년 헌법의 제왕적 대통령제를 넘어, 권력 집중을 해소하고, 합의제 민주주의와 기후위기에 대처할 수 있는 새로운 헌법을 제안하고자 나섰습니다.
+      개헌국민행동은 누구나 함께할 수 있는 국민 중심의 개헌 공론장을 만들고, 교육·홍보 활동을 통해 광범한 공감대 형성은 물론, 국민 참여를 확산시키고자 합니다.
+      국민이 이루는 개헌, 헌법개정국민행동과 함께해요.
     </p>
-
-    <!-- 활동 사진 갤러리 예시 -->
+    <!-- 활동 사진 갤러리 -->
     <div class="image-gallery">
       <img src="images/image1.jpg" alt="헌법개정 모임 사진1">
       <img src="images/image2.jpg" alt="헌법개정 모임 사진2">
     </div>
-
     <h2>주요 활동</h2>
     <ul>
       <li>헌법 개정 관련 토론회 및 공청회 개최</li>
@@ -164,28 +167,23 @@
       <li>언론·시민사회와의 협력 강화</li>
       <li>관련 법안 및 정책 제안</li>
     </ul>
-
     <p>
       교육·홍보를 통해 국민들의 참여를 독려하고,<br>
       대한민국 헌법의 발전을 위해 최선을 다하고 있습니다.
     </p>
-
     <p>
       함께 하실 분들은 언제든 연락 주세요.<br>
       <strong>actnowkorea@gmail.com</strong>
     </p>
-
-    <!-- 가입하기 버튼 -->
-    <button id="signupButton" onclick="loginWithKakao()">가입하기</button>
-    <!-- 가입 결과 메시지 영역 -->
-    <div id="signupResult"></div>
   </main>
-
-  <!-- 하단 푸터 영역 -->
+  
+  <!-- 푸터 영역 -->
   <footer>
     <p>
-      문의: 02-792-0020 / Fax: 080-7467<br>
-      &copy; 2025 헌법개정국민행동
+      T/ 02-782-0260&nbsp;&nbsp;F/ 02-782-0270<br>
+      헌법개정국민행동&nbsp;&nbsp;사업자등록번호: 603-82-70451<br>
+      (07241) 서울특별시 영등포구 은행로 58(여의도동), 삼도빌딩 608호<br>
+      대표 이상수<br>
       <a href="/Privacy_Policy.html" target="_blank">개인정보처리방침</a>
       <a href="/unlink.html" target="_blank">탈퇴하기</a>
     </p>
