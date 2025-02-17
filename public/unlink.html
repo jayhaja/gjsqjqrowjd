@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인 후 회원탈퇴 (강제 재로그인 방식)</title>
+  <!-- 최신 Kakao JavaScript SDK 불러오기 -->
+  <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+  <script>
+    // Kakao SDK 초기화 (웹용 JavaScript 키 사용)
+    Kakao.init('90ed090fa6d7044e65e276410a0232d7'); 
+    console.log('Kakao SDK initialized');
+
+    // 로그인 + 탈퇴를 하나의 버튼으로 처리하는 함수 (강제 로그아웃 후 재로그인)
+    function combinedLoginAndUnlink() {
+      // 먼저 기존 토큰이 있다면 강제 로그아웃 시도
+      Kakao.Auth.logout(function() {
+        console.log("기존 토큰 로그아웃 완료");
+        // 재로그인을 진행하여 새 토큰을 발급받음
+        Kakao.Auth.loginForm({
+          scope: 'profile_nickname, account_email, gender, age_range, birthyear, phone_number',
+          success: function(authObj) {
+            console.log("로그인 성공:", authObj);
+            var token = Kakao.Auth.getAccessToken();
+            console.log("새로운 토큰:", token);
+            if (!token) {
+              alert("로그인 후에도 토큰이 확인되지 않습니다.");
+              return;
+            }
+            // 새 토큰이 확보되면 탈퇴 API 호출
+            proceedToUnlink();
+          },
+          fail: function(err) {
+            console.error("로그인 실패:", err);
+            alert("로그인 실패: " + JSON.stringify(err));
+          }
+        });
+      });
+    }
+
+    // 회원탈퇴(연결 해제) 함수
+    function proceedToUnlink() {
+      if (!confirm("회원탈퇴 하시겠습니까?")) {
+        return;
+      }
+      
+      Kakao.API.request({
+        url: '/v1/user/unlink'
+      })
+      .then(function(res) {
+        alert("회원탈퇴가 완료되었습니다.");
+        console.log("리다이렉션 진행...");
+        // 탈퇴 후 홈페이지로 리다이렉션 (부모 창 이동)
+        if (window.top !== window) {
+          window.top.location.href = "https://sites.google.com/view/actnowkorea";
+        } else {
+          window.location.href = "https://sites.google.com/view/actnowkorea";
+        }
+      })
+      .catch(function(err) {
+        console.error("회원탈퇴 요청 오류:", err);
+        alert("회원탈퇴 실패: " + JSON.stringify(err));
+      });
+    }
+  </script>
+  <style>
+    html, body {
+      margin: 0; 
+      padding: 0;
+      background: #fff;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    .api-btn {
+      background-color: #FF6F61;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 하나의 버튼으로 로그인(강제 재로그인) 후 회원탈퇴를 처리 -->
+  <button class="api-btn" onclick="combinedLoginAndUnlink()">로그인 후 회원탈퇴</button>
+</body>
+</html>
