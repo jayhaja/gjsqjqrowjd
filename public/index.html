@@ -6,37 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Kakao JavaScript SDK 불러오기 -->
   <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
-  <!-- app.js 연결 -->
+  <!-- app.js 연결 (여기에 Kakao 초기화 및 로그인 함수 등이 정의되어 있음) -->
   <script src="app.js"></script>
-  <script>
-    // Kakao SDK 초기화 (본인의 JavaScript 키로 교체)
-    Kakao.init('90ed090fa6d7044e65e276410a0232d7');
-    console.log("Kakao SDK initialized");
-
-    // 가입하기 버튼 클릭 시 호출되는 함수
-    function loginWithKakao() {
-      Kakao.Auth.login({
-        scope: 'profile_nickname, account_email, gender, age_range, birthyear, phone_number',
-        success: function(authObj) {
-          console.log("Kakao login success:", authObj);
-          // 로그인 성공 후 사용자 정보 요청
-          Kakao.API.request({
-            url: '/v2/user/me',
-            success: function(res) {
-              console.log("Kakao user info:", res);
-              document.getElementById('signupResult').innerText = "가입이 완료되었습니다.";
-            },
-            fail: function(error) {
-              console.error("Failed to get user info:", error);
-            }
-          });
-        },
-        fail: function(err) {
-          console.error("Kakao login failed:", err);
-        }
-      });
-    }
-  </script>
   <style>
     /* 기본 스타일 리셋 */
     * {
@@ -132,7 +103,7 @@
     <h1>헌법개정국민행동</h1>
     <h2>국민의 목소리를 반영하는 헌법 개정을!</h2>
     <p>헌법개정을 국민의 손으로 ✊✊✊</p>
-    <!-- 가입하기 버튼를 헤더 내 텍스트 아래에 자연스럽게 배치 -->
+    <!-- 가입하기 버튼: 클릭 시 app.js에 정의된 loginWithKakao() 함수 실행 -->
     <button class="signup-btn" onclick="loginWithKakao()">가입하기</button>
   </header>
   
@@ -142,7 +113,7 @@
   <!-- 메인 콘텐츠 -->
   <main>
     <p>
-국가적 혼란 속에서, 개헌의 목소리가 곳곳에서 터져 나오고 있습니다. 
+      국가적 혼란 속에서, 개헌의 목소리가 곳곳에서 터져 나오고 있습니다. 
       헌법개정국민행동은 87년 헌법의 제왕적 대통령제를 넘어, 권력 집중을 해소하고, 합의제 민주주의와 기후위기에 대처할 수 있는 새로운 헌법을 제안하고자 나섰습니다.
       개헌국민행동은 누구나 함께할 수 있는 국민 중심의 개헌 공론장을 만들고, 교육·홍보 활동을 통해 광범한 공감대 형성은 물론, 국민 참여를 확산시키고자 합니다.
       국민이 이루는 개헌, 헌법개정국민행동과 함께해요.
@@ -173,7 +144,6 @@
       더 적극적으로 함께 하고 싶으신 분들은 톡이나 이메일로 연락 주세요. 🥰
       <strong>actnowkorea@gmail.com</strong>
     </p>
-
   </main>
   
   <!-- 푸터 영역 -->
