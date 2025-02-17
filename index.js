@@ -10,16 +10,19 @@ const PORT = process.env.PORT || 3000;
 // JSON 파싱 미들웨어 (POST 요청 시 body를 파싱)
 app.use(express.json());
 
-// 기본 경로 (홈페이지)
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
+// 정적 파일 제공: public 폴더를 정적 경로로 사용 (public/index.html이 기본 페이지로 제공됨)
+app.use(express.static('public'));
 
-// 로그인 페이지 라우트: 카카오톡 로그인 버튼을 표시
+// 로그인 페이지 라우트: (정적 파일 대신 별도의 HTML을 제공하고 싶다면)
+// 여기서는 예시로 /login 라우트를 남겨둡니다.
 app.get('/login', (req, res) => {
   res.send(`
-    <html>
-      <head><title>카카오톡 로그인</title></head>
+    <!DOCTYPE html>
+    <html lang="ko">
+      <head>
+        <meta charset="UTF-8">
+        <title>카카오톡 로그인</title>
+      </head>
       <body>
         <h1>로그인 페이지</h1>
         <a href="/auth/kakao">카카오톡으로 로그인하기</a>
@@ -70,10 +73,7 @@ app.get('/auth/kakao/callback', async (req, res) => {
     const userData = userResponse.data;
     console.log('카카오 사용자 정보:', userData);
 
-    // 여기서 사용자 정보를 데이터베이스에 저장할 수도 있습니다.
-    // 예시: sendUserInfoToDB(userData);
-
-    // 사용자 정보를 브라우저에 표시
+    // 실제 운영 시에는 사용자 정보를 데이터베이스에 저장하고, 적절한 페이지로 리디렉션합니다.
     res.send(`로그인 성공! 사용자 정보: ${JSON.stringify(userData)}`);
   } catch (error) {
     console.error('카카오 로그인 오류:', error);
@@ -139,7 +139,7 @@ app.post('/api/registerKakaoUser', async (req, res) => {
   }
 });
 
-// 서버 실행
+// 서버 실행 (한 번만 호출)
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
