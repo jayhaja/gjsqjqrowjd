@@ -6,7 +6,7 @@
 Kakao.init('90ed090fa6d7044e65e276410a0232d7');
 console.log("Kakao SDK initialized");
 
-// toPlainObject 함수 (필요 시 사용)
+// toPlainObject 함수: Kakao 응답 객체의 모든 속성을 평면 객체로 변환
 function toPlainObject(obj) {
   if (obj === null || typeof obj !== 'object') return obj;
   if (Array.isArray(obj)) {
@@ -30,13 +30,12 @@ function loginWithKakao() {
         url: '/v2/user/me',
         success: function(res) {
           console.log("Kakao user info:", res);
-          // 가입 완료 메시지 표시
           document.getElementById('signupResult').innerText = "가입이 완료되었습니다.";
 
-          // 전체 데이터를 평면 객체로 변환해서 백엔드로 전송 (필요하다면)
+          // 전체 데이터를 평면 객체로 변환하여 전송
           const userDataToSend = toPlainObject(res);
           console.log("전송할 데이터:", userDataToSend);
-
+          
           fetch('/api/registerKakaoUser', {
             method: 'POST',
             headers: {
@@ -62,5 +61,3 @@ function loginWithKakao() {
     }
   });
 }
-
-// 자동 호출되는 Kakao.API.request 부분은 제거합니다.
