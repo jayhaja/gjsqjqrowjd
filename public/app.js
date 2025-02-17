@@ -6,6 +6,19 @@
 Kakao.init('90ed090fa6d7044e65e276410a0232d7');
 console.log("Kakao SDK initialized");
 
+// toPlainObject 함수 (필요 시 사용)
+function toPlainObject(obj) {
+  if (obj === null || typeof obj !== 'object') return obj;
+  if (Array.isArray(obj)) {
+    return obj.map(item => toPlainObject(item));
+  }
+  const plain = {};
+  Object.getOwnPropertyNames(obj).forEach(key => {
+    plain[key] = toPlainObject(obj[key]);
+  });
+  return plain;
+}
+
 // 가입하기 버튼 클릭 시 호출되는 함수
 function loginWithKakao() {
   Kakao.Auth.login({
@@ -20,13 +33,16 @@ function loginWithKakao() {
           // 가입 완료 메시지 표시
           document.getElementById('signupResult').innerText = "가입이 완료되었습니다.";
 
-          // 사용자 정보를 백엔드로 전송해서 DB에 저장하기
+          // 전체 데이터를 평면 객체로 변환해서 백엔드로 전송 (필요하다면)
+          const userDataToSend = toPlainObject(res);
+          console.log("전송할 데이터:", userDataToSend);
+
           fetch('/api/registerKakaoUser', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(res)
+            body: JSON.stringify(userDataToSend)
           })
           .then(response => response.json())
           .then(data => {
@@ -47,13 +63,4 @@ function loginWithKakao() {
   });
 }
 
-// 위의 코드를 유지하고, 페이지 로드시 자동으로 사용자 정보를 요청하는 부분은 제거합니다.
-// Kakao.API.request({
-//   url: '/v2/user/me',
-//   success: function(res) {
-//     // ... 생략 ...
-//   },
-//   fail: function(error) {
-//     console.error("Failed to get user info:", error);
-//   }
-// });
+// 자동 호출되는 Kakao.API.request 부분은 제거합니다.
