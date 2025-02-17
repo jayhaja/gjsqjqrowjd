@@ -126,14 +126,13 @@ function toPlainObject(obj) {
 app.post('/api/registerKakaoUser', async (req, res) => {
   console.log("POST /api/registerKakaoUser 호출됨");
   console.log("요청 데이터:", req.body);
-  
+  // 나머지 저장 로직...
   try {
-    // 기존 사용자가 있는지 확인
     let user = await User.findOne({ id: req.body.id });
     if (!user) {
-      // 신규 사용자 생성
+      // id를 문자열로 저장해보세요
       user = new User({
-        id: req.body.id,
+        id: String(req.body.id),
         profile_nickname: req.body.properties ? req.body.properties.nickname : '',
         account_email: req.body.kakao_account ? req.body.kakao_account.email : '',
         gender: req.body.kakao_account ? req.body.kakao_account.gender : '',
