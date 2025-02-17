@@ -116,27 +116,27 @@ const User = mongoose.model('User', userSchema);
 
 // API 엔드포인트: 프론트엔드에서 전달받은 사용자 정보를 MongoDB에 저장
 app.post('/api/registerKakaoUser', async (req, res) => {
+  console.log("POST /api/registerKakaoUser 호출됨");
+  console.log("요청 데이터:", req.body);
+  
   try {
-    const kakaoUser = req.body;
-    console.log("프론트엔드에서 받은 사용자 정보:", kakaoUser);
-
     // 기존 사용자가 있는지 확인
-    let user = await User.findOne({ id: kakaoUser.id });
+    let user = await User.findOne({ id: req.body.id });
     if (!user) {
       // 신규 사용자 생성
       user = new User({
-        id: kakaoUser.id,
-        profile_nickname: kakaoUser.properties ? kakaoUser.properties.nickname : '',
-        account_email: kakaoUser.kakao_account ? kakaoUser.kakao_account.email : '',
-        gender: kakaoUser.kakao_account ? kakaoUser.kakao_account.gender : '',
-        age_range: kakaoUser.kakao_account ? kakaoUser.kakao_account.age_range : '',
-        birthyear: kakaoUser.kakao_account ? kakaoUser.kakao_account.birthyear : '',
-        phone_number: kakaoUser.kakao_account ? kakaoUser.kakao_account.phone_number : ''
+        id: req.body.id,
+        profile_nickname: req.body.properties ? req.body.properties.nickname : '',
+        account_email: req.body.kakao_account ? req.body.kakao_account.email : '',
+        gender: req.body.kakao_account ? req.body.kakao_account.gender : '',
+        age_range: req.body.kakao_account ? req.body.kakao_account.age_range : '',
+        birthyear: req.body.kakao_account ? req.body.kakao_account.birthyear : '',
+        phone_number: req.body.kakao_account ? req.body.kakao_account.phone_number : ''
       });
       await user.save();
-      console.log("신규 사용자 저장 완료");
+      console.log("사용자 정보 저장 완료:", user);
     } else {
-      console.log("기존 사용자 발견");
+      console.log("기존 사용자 발견:", user);
     }
     res.json({ success: true, message: "회원가입이 완료되었습니다." });
   } catch (error) {
@@ -145,11 +145,8 @@ app.post('/api/registerKakaoUser', async (req, res) => {
   }
 });
 
-
 // 테스트 라우트
 app.get('/test-html', (req, res) => {
-  // __dirname은 현재 JS 파일이 위치한 폴더 경로를 가리킵니다.
-  // public 폴더 내 index.html 파일을 직접 전송
   res.sendFile(__dirname + '/public/index.html');
 });
 
