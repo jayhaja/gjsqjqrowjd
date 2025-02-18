@@ -75,10 +75,19 @@ main p {
   margin-bottom: 30px;
   justify-content: center;
 }
+/* 기존 CSS 코드 ... */
+
 .image-gallery figure {
   margin: 0;
   width: 100%;
   max-width: 48%;
+}
+
+/* 반응형 미디어 쿼리 추가 */
+@media (max-width: 768px) {
+  .image-gallery figure {
+    max-width: 100%;
+  }
 }
 .image-gallery img {
   width: 100%;
@@ -137,7 +146,6 @@ footer p {
   <figure>
     <img src="images/image1.jpg" alt="헌법개정 모임 사진1">
     <figcaption>
-      1번 사진<br>
       설날 인사 및 개헌 홍보 캠페인<br>
       2025. 01. 27
     </figcaption>
@@ -145,7 +153,6 @@ footer p {
   <figure>
     <img src="images/image2.jpg" alt="헌법개정 모임 사진2">
     <figcaption>
-      2번 사진<br>
       헌정회 주최 개헌관련 각급 단체 대표 간담회<br>
       2025. 01. 31
     </figcaption>
