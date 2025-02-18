@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>로그인 후 회원탈퇴 (강제 재로그인 방식)</title>
+  <title>회원탈퇴</title>
   <!-- 최신 Kakao JavaScript SDK 불러오기 -->
   <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
   <script>
@@ -50,11 +50,11 @@
         alert("회원탈퇴가 완료되었습니다.");
         console.log("리다이렉션 진행...");
         // 탈퇴 후 홈페이지로 리다이렉션 (부모 창 이동)
-        if (window.top !== window) {
-          window.top.location.href = "https://gjsqjqrowjd.xyz/login/callback";
-        } else {
-          window.location.href = "https://gjsqjqrowjd.xyz/login/callback";
-        }
+if (window.top !== window) {
+  window.top.location.href = "https://gjsqjqrowjd.xyz";
+} else {
+  window.location.href = "https://gjsqjqrowjd.xyz";
+}
       })
       .catch(function(err) {
         console.error("회원탈퇴 요청 오류:", err);
