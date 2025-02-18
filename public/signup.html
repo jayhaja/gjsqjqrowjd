@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입 - 헌법개정공동행동</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      background: #f9f9f9; 
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 { text-align: center; margin-bottom: 20px; }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button { background: #FEE500; border: none; cursor: pointer; font-size: 16px; }
+    button:hover { background: #fcd600; }
+    .message { text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>회원가입</h1>
+    <form id="signupForm">
+      <input type="text" id="name" name="name" placeholder="본명" required>
+      <input type="email" id="email" name="email" placeholder="이메일" required>
+      <input type="tel" id="phone" name="phone" placeholder="전화번호" required>
+      <!-- 추가 입력 필드를 원하시면 여기에 추가 -->
+      <button type="submit">가입하기</button>
+    </form>
+    <div id="signupMessage" class="message"></div>
+  </div>
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const data = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value
+        // 추가 데이터가 있으면 여기에 추가
+      };
+      fetch('/api/manualSignup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(result => {
+        document.getElementById('signupMessage').innerText = result.message;
+      })
+      .catch(error => {
+        console.error("회원가입 전송 오류:", error);
+        document.getElementById('signupMessage').innerText = "가입 중 오류가 발생했습니다.";
+      });
+    });
+  </script>
+</body>
+</html>

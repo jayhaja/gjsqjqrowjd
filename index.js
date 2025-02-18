@@ -155,6 +155,28 @@ app.post('/api/registerKakaoUser', async (req, res) => {
   }
 });
 
+// 수동 회원가입 API 엔드포인트
+app.post('/api/manualSignup', async (req, res) => {
+  console.log("POST /api/manualSignup 호출됨");
+  console.log("요청 데이터:", req.body);
+  try {
+    // 신규 사용자 생성 (Kakao 간편가입과는 별도로 수동 회원가입)
+    let user = new User({
+      name: req.body.name,
+      account_email: req.body.email,
+      phone_number: req.body.phone,
+      profile_nickname: req.body.name, // 예시로 본명을 닉네임으로도 사용
+      gender: '', age_range: '', birthyear: ''
+    });
+    await user.save();
+    console.log("수동 가입 사용자 정보 저장 완료:", user);
+    res.json({ success: true, message: "회원가입이 완료되었습니다." });
+  } catch (error) {
+    console.error("수동 회원가입 저장 오류:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // 테스트 라우트 (index.html을 직접 보내는 용도)
 app.get('/test-html', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
