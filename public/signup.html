@@ -14,30 +14,58 @@
       max-width: 600px;
       margin: 0 auto;
       background: #fff;
-      padding: 20px;
+      padding: 30px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     h1 { 
       text-align: center; 
-      margin-bottom: 20px; 
+      margin-bottom: 30px; 
     }
     form {
       display: flex;
       flex-direction: column;
     }
-    input, button, select {
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 0.95rem;
+      color: #333;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"] {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
+      padding: 12px;
       border: 1px solid #ddd;
       border-radius: 4px;
-      font-size: 16px;
+      font-size: 0.95rem;
+    }
+    .radio-group {
+      display: flex;
+      justify-content: space-around;
+      margin: 10px 0;
+    }
+    .radio-item {
+      display: flex;
+      align-items: center;
+    }
+    .radio-item input[type="radio"] {
+      margin-right: 5px;
     }
     button {
       background: #FEE500;
       border: none;
+      border-radius: 4px;
+      padding: 14px;
+      font-size: 1rem;
       cursor: pointer;
+      margin-top: 10px;
     }
     button:hover { 
       background: #fcd600; 
@@ -45,16 +73,8 @@
     .message { 
       text-align: center; 
       margin-top: 20px; 
-      font-size: 16px;
-    }
-    .radio-group {
-      display: flex;
-      justify-content: space-around;
-      margin: 10px 0;
-    }
-    .radio-group label {
-      font-size: 16px;
-      margin-right: 5px;
+      font-size: 1rem;
+      color: #333;
     }
   </style>
 </head>
@@ -62,30 +82,51 @@
   <div class="container">
     <h1>회원가입</h1>
     <form id="signupForm">
-      <!-- 이름(본명) 입력 -->
-      <input type="text" id="name" name="name" placeholder="이름 (본명)" required>
-      
-      <!-- 생일 입력 (날짜 선택) -->
-      <input type="date" id="birthday" name="birthday" placeholder="생일" required>
-      
-      <!-- 이메일 입력 -->
-      <input type="email" id="email" name="email" placeholder="이메일" required>
-      
-      <!-- 전화번호 입력 -->
-      <input type="tel" id="phone" name="phone" placeholder="전화번호" required>
-      
-      <!-- 성별 선택 (라디오 버튼) -->
-      <div class="radio-group">
-        <label for="gender_male">남성</label>
-        <input type="radio" id="gender_male" name="gender" value="male" required>
-        <label for="gender_female">여성</label>
-        <input type="radio" id="gender_female" name="gender" value="female" required>
+      <!-- 이름(본명) -->
+      <div class="form-group">
+        <label for="name">이름 (본명)</label>
+        <input type="text" id="name" name="name" placeholder="예: 홍길동" required>
       </div>
       
-      <!-- 주소 입력 (동까지) -->
-      <input type="text" id="address" name="address" placeholder="주소 (동까지)" required>
+      <!-- 생일 -->
+      <div class="form-group">
+        <label for="birthday">생일</label>
+        <input type="date" id="birthday" name="birthday" required>
+      </div>
       
-      <!-- 제출 버튼 -->
+      <!-- 이메일 -->
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <input type="email" id="email" name="email" placeholder="예: example@gmail.com" required>
+      </div>
+      
+      <!-- 전화번호 -->
+      <div class="form-group">
+        <label for="phone">전화번호</label>
+        <input type="tel" id="phone" name="phone" placeholder="예: 010-1234-5678" required>
+      </div>
+      
+      <!-- 성별 -->
+      <div class="form-group">
+        <label>성별</label>
+        <div class="radio-group">
+          <label class="radio-item">
+            <input type="radio" id="gender_male" name="gender" value="male" required>
+            남성
+          </label>
+          <label class="radio-item">
+            <input type="radio" id="gender_female" name="gender" value="female" required>
+            여성
+          </label>
+        </div>
+      </div>
+      
+      <!-- 주소(동까지) -->
+      <div class="form-group">
+        <label for="address">주소 (동까지)</label>
+        <input type="text" id="address" name="address" placeholder="예: 서울특별시 영등포구 여의도동" required>
+      </div>
+      
       <button type="submit">가입하기</button>
     </form>
     <div id="signupMessage" class="message"></div>
@@ -93,7 +134,6 @@
   <script>
     document.getElementById('signupForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      // 폼 데이터 수집
       const data = {
         name: document.getElementById('name').value,
         birthday: document.getElementById('birthday').value,
@@ -102,8 +142,6 @@
         gender: document.querySelector('input[name="gender"]:checked').value,
         address: document.getElementById('address').value
       };
-      
-      // 백엔드의 수동 회원가입 API 엔드포인트로 전송
       fetch('/api/manualSignup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
