@@ -95,6 +95,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/kakaoUser
 // 사용자 스키마 정의 (카카오 로그인으로 받은 정보를 저장)
 const userSchema = new mongoose.Schema({
   id: { type: String, unique: true },
+  name: String, // 추가: 본명
   profile_nickname: String,
   account_email: String,
   gender: String,
@@ -108,7 +109,7 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 /* 
-  toPlainObject 함수: Kakao API 응답 객체의 모든 own property(열거 가능한 & non-enumerable)들을 포함하는 평면 객체로 변환
+  toPlainObject 함수: Kakao API 응답 객체의 모든 own property들을 평면 객체로 변환
 */
 function toPlainObject(obj) {
   if (obj === null || typeof obj !== 'object') return obj;
@@ -131,22 +132,22 @@ app.post('/api/registerKakaoUser', async (req, res) => {
     // 기존 사용자가 있는지 확인
     let user = await User.findOne({ id: req.body.id });
     if (!user) {
-// 신규 사용자 생성 및 저장
-user = new User({
-  id: req.body.id,
-  name: req.body.kakao_account ? req.body.kakao_account.name : '', // 추가된 name 필드 (profil name이 아닌 일반 name)
-  profile_nickname: req.body.properties ? req.body.properties.nickname : '',
-  account_email: req.body.kakao_account ? req.body.kakao_account.email : '',
-  gender: req.body.kakao_account ? req.body.kakao_account.gender : '',
-  age_range: req.body.kakao_account ? req.body.kakao_account.age_range : '',
-  birthyear: req.body.kakao_account ? req.body.kakao_account.birthyear : '',
-  phone_number: req.body.kakao_account ? req.body.kakao_account.phone_number : ''
-});
-await user.save();
-console.log("사용자 정보 저장 완료:", user);
-} else {
-  console.log("기존 사용자 발견:", user);
-}
+      // 신규 사용자 생성 및 저장
+      user = new User({
+        id: String(req.body.id),
+        name: req.body.kakao_account ? req.body.kakao_account.name : '',
+        profile_nickname: req.body.properties ? req.body.properties.nickname : '',
+        account_email: req.body.kakao_account ? req.body.kakao_account.email : '',
+        gender: req.body.kakao_account ? req.body.kakao_account.gender : '',
+        age_range: req.body.kakao_account ? req.body.kakao_account.age_range : '',
+        birthyear: req.body.kakao_account ? req.body.kakao_account.birthyear : '',
+        phone_number: req.body.kakao_account ? req.body.kakao_account.phone_number : ''
+      });
+      await user.save();
+      console.log("사용자 정보 저장 완료:", user);
+    } else {
+      console.log("기존 사용자 발견:", user);
+    }
     res.json({ success: true, message: "회원가입이 완료되었습니다." });
   } catch (error) {
     console.error("데이터베이스 저장 오류:", error);
