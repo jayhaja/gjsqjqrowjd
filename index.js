@@ -100,7 +100,7 @@ const userSchema = new mongoose.Schema({
   account_email: String,
   gender: String,
   age_range: String,
-  birthyear: String,
+  birthday: String,
   phone_number: String,
   createdAt: { type: Date, default: Date.now }
 });
@@ -140,7 +140,7 @@ app.post('/api/registerKakaoUser', async (req, res) => {
         account_email: req.body.kakao_account ? req.body.kakao_account.email : '',
         gender: req.body.kakao_account ? req.body.kakao_account.gender : '',
         age_range: req.body.kakao_account ? req.body.kakao_account.age_range : '',
-        birthyear: req.body.kakao_account ? req.body.kakao_account.birthyear : '',
+        birthday: req.body.kakao_account ? req.body.kakao_account.birthday : '',
         phone_number: req.body.kakao_account ? req.body.kakao_account.phone_number : ''
       });
       await user.save();
@@ -166,7 +166,7 @@ app.post('/api/manualSignup', async (req, res) => {
       account_email: req.body.email,
       phone_number: req.body.phone,
       profile_nickname: req.body.name, // 예시로 본명을 닉네임으로도 사용
-      gender: '', age_range: '', birthyear: ''
+      gender: '', age_range: '', birthday: ''
     });
     await user.save();
     console.log("수동 가입 사용자 정보 저장 완료:", user);
