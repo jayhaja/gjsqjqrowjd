@@ -4,8 +4,8 @@
 
 // Kakao SDK 초기화 (본인의 JavaScript 키로 교체)
 
-// 교체할 코드 Kakao.init('45df237890d3b3f2f052e30b4977072d')
-Kakao.init('90ed090fa6d7044e65e276410a0232d7');
+// 교체할 코드 Kakao.init('90ed090fa6d7044e65e276410a0232d7')
+Kakao.init('45df237890d3b3f2f052e30b4977072d');
 console.log("Kakao SDK initialized");
 
 // toPlainObject 함수: Kakao 응답 객체의 모든 속성을 평면 객체로 변환
