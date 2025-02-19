@@ -95,14 +95,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/kakaoUser
 // 사용자 스키마 정의 (카카오 로그인으로 받은 정보를 저장)
 const userSchema = new mongoose.Schema({
   id: { type: String, unique: true },
-  name: String, // 추가: 본명
   profile_nickname: String,
   account_email: String,
-  gender: String,
-  age_range: String,
-  birthday: String,
-  birthyear: String,
-  phone_number: String,
   createdAt: { type: Date, default: Date.now }
 });
 
@@ -136,14 +130,8 @@ app.post('/api/registerKakaoUser', async (req, res) => {
       // 신규 사용자 생성 및 저장
       user = new User({
         id: String(req.body.id),
-        name: req.body.kakao_account ? req.body.kakao_account.name : '',
         profile_nickname: req.body.properties ? req.body.properties.nickname : '',
         account_email: req.body.kakao_account ? req.body.kakao_account.email : '',
-        gender: req.body.kakao_account ? req.body.kakao_account.gender : '',
-        age_range: req.body.kakao_account ? req.body.kakao_account.age_range : '',
-        birthday: req.body.kakao_account ? req.body.kakao_account.birthday : '',
-        birthyear: req.body.kakao_account ? req.body.kakao_account.birthyear : '',
-        phone_number: req.body.kakao_account ? req.body.kakao_account.phone_number : ''
       });
       await user.save();
       console.log("사용자 정보 저장 완료:", user);
@@ -164,11 +152,8 @@ app.post('/api/manualSignup', async (req, res) => {
   try {
     // 신규 사용자 생성 (Kakao 간편가입과는 별도로 수동 회원가입)
     let user = new User({
-      name: req.body.name,
       account_email: req.body.email,
-      phone_number: req.body.phone,
       profile_nickname: req.body.name, // 예시로 본명을 닉네임으로도 사용
-      gender: '', age_range: '', birthday: '', birthyear: ''
     });
     await user.save();
     console.log("수동 가입 사용자 정보 저장 완료:", user);
