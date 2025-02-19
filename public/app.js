@@ -24,7 +24,7 @@ function toPlainObject(obj) {
 // 가입하기 버튼 클릭 시 호출되는 함수
 function loginWithKakao() {
   Kakao.Auth.login({
-    scope: 'profile_nickname,name,account_email',
+    scope: 'profile_nickname,account_email',
     success: function(authObj) {
       console.log("Kakao login success:", authObj);
       // 로그인 성공 후 사용자 정보 요청
